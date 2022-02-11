@@ -6,4 +6,14 @@ const server = express();
 // Build your projects router in /api/projects/projects-router.js
 // Do NOT `server.listen()` inside this file!
 
+const { logger } = require('./projects/projects-middleware');
+const projectsRouter = require('./projects/projects-router');
+const actionsRouter = require('./actions/actions-router');
+
+server.use(logger);
+server.use(express.json());
+
+server.use('/api/projects', projectsRouter);
+server.use('/api/actions', actionsRouter);
+
 module.exports = server;
