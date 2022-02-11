@@ -12,7 +12,7 @@ function logger(req, res, next) {
 
 function validateProject(req, res, next) {
     const project = req.body;
-    if(!project.name || !project.description){
+    if(!project.name || !project.description || project.completed == null){
         res.status(400).json({message: 'missing required field(s)'});
     } else if(!project.completed) {
         req.project = {
