@@ -26,7 +26,24 @@ function validateProject(req, res, next) {
     }
 }
 
+function validateProjectId(req, res, next) {
+    const { id } = req.params;
+    Projects.get(id)
+        .then(resp => {
+            if(resp == null){
+                res.status(404).json({message: `project ${id} could not be found`});
+            } else {
+                req.project = resp;
+                next();
+            }
+        })
+        .catch(() => {
+            res.status(500).json({message: 'could not validate project'});
+        })
+}
+
 module.exports = {
     logger,
-    validateProject
+    validateProject,
+    validateProjectId
 };

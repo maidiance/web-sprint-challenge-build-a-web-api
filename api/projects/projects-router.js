@@ -1,7 +1,7 @@
 // Write your "projects" router here!
 const express = require('express');
 const Projects = require('./projects-model.js');
-const { validateProject } = require('./projects-middleware');
+const { validateProject, validateProjectId } = require('./projects-middleware');
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -18,19 +18,8 @@ router.get('/', (req, res) => {
         })
 });
 
-router.get('/:id', (req, res) => {
-    const { id } = req.params;
-    Projects.get(id)
-        .then(resp => {
-            if(resp == null) {
-                res.status(404).json({message: `project ${id} not found`});
-            } else {
-                res.status(200).json(resp);
-            }
-        })
-        .catch(() => {
-            res.status(500).json({message: 'failed to get project'});
-        })
+router.get('/:id', validateProjectId, (req, res) => {
+    res.status(200).json(req.project);
 });
 
 router.post('/', validateProject, (req, res) => {
@@ -70,6 +59,21 @@ router.delete('/:id', (req, res) => {
         })
         .catch(() => {
             res.status(500).json({message: 'failed to delete project'});
+        })
+});
+
+router.get('/:id/actions', (req, res) => {
+    const { id } = req.params;
+    Projects.getProjectActions(id)
+        .then(resp => {
+            if(resp == null) {
+                res.status(200).json([]);
+            } else {
+                res.status(200).json(resp);
+            }
+        })
+        .catch(() => {
+            res.status(500).json({message: 'failed to get actions'});
         })
 });
 
