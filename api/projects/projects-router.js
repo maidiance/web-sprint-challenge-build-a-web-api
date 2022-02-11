@@ -32,7 +32,7 @@ router.post('/', validateProject, (req, res) => {
         })
 });
 
-router.put('/:id', validateProject, (req, res) => {
+router.put('/:id', validateProjectId, validateProject, (req, res) => {
     const { id } = req.params;
     Projects.update(id, req.project)
         .then(resp => {
@@ -62,7 +62,7 @@ router.delete('/:id', (req, res) => {
         })
 });
 
-router.get('/:id/actions', (req, res) => {
+router.get('/:id/actions', validateProjectId, (req, res) => {
     const { id } = req.params;
     Projects.getProjectActions(id)
         .then(resp => {
