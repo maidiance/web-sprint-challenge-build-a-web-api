@@ -1,5 +1,6 @@
 // add middlewares here related to actions
 const Actions = require('./actions-model');
+const Projects = require('../projects/projects-model');
 
 function validateActionId(req, res, next) {
     const { id } = req.params;
@@ -19,12 +20,7 @@ function validateActionId(req, res, next) {
 
 function validateAction(req, res, next) {
     const action = req.body;
-    if(action.project_id == null){
-        req.params.id = -1;
-    }else {
-        req.params.id = action.project_id;
-    }
-    if(!action.description || !action.notes){
+    if(!action.project_id || !action.description || !action.notes){
         res.status(400).json({message: 'missing required field(s)'});
     } else if(!action.completed) {
         req.action = {
@@ -38,7 +34,24 @@ function validateAction(req, res, next) {
     }
 }
 
+function validateProjectId(req, res, next) {
+    const id = req.body.project_id;
+    Projects.get(id)
+        .then(resp => {
+            if(resp == null){
+                res.status(404).json({message: `project ${id} could not be found`});
+            } else {
+                req.project = resp;
+                next();
+            }
+        })
+        .catch(() => {
+            res.status(500).json({message: 'could not validate project'});
+        })
+}
+
 module.exports = {
     validateActionId,
-    validateAction
+    validateAction,
+    validateProjectId
 };

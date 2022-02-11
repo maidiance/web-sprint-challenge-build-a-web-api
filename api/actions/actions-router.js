@@ -1,8 +1,7 @@
 // Write your "actions" router here!
 const express = require('express');
 const Actions = require('./actions-model.js');
-const { validateActionId, validateAction } = require('./actions-middlware');
-const { validateProjectId } = require('../projects/projects-middleware');
+const { validateActionId, validateAction, validateProjectId } = require('./actions-middlware');
 
 const router = express.Router();
 
@@ -31,6 +30,17 @@ router.post('/', validateAction, validateProjectId, (req, res) => {
         })
         .catch(() => {
             res.status(500).json({message: 'failed to post action'});
+        })
+});
+
+router.put('/:id', validateActionId, validateAction, (req, res) => {
+    const { id } = req.params;
+    Actions.update(id, req.action)
+        .then(resp => {
+            res.status(200).json(resp);
+        })
+        .catch(() => {
+            res.status(500).json({message: 'failed to update action'});
         })
 });
 
