@@ -19,6 +19,11 @@ function validateActionId(req, res, next) {
 
 function validateAction(req, res, next) {
     const action = req.body;
+    if(action.project_id == null){
+        req.params.id = -1;
+    }else {
+        req.params.id = action.project_id;
+    }
     if(!action.description || !action.notes){
         res.status(400).json({message: 'missing required field(s)'});
     } else if(!action.completed) {

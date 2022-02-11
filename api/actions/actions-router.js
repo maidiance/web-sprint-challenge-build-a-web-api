@@ -24,7 +24,7 @@ router.get('/:id', validateActionId, (req, res) => {
     res.status(200).json(req.action);
 });
 
-router.post('/', validateProjectId, validateAction, (req, res) => {
+router.post('/', validateAction, validateProjectId, (req, res) => {
     Actions.insert(req.action)
         .then(() => {
             res.status(201).json(req.action);
