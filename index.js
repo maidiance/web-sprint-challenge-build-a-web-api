@@ -15,10 +15,15 @@ Pull your server into this file and start it!
 const express = require('express');
 const server = express();
 
+const projectsRouter = require('./api/projects/projects-router');
+
 require('dotenv').config();
 const PORT = process.env.PORT || 9000;
 
 server.use(express.json());
+
+server.use('/api/projects', projectsRouter);
+
 server.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);
 });
