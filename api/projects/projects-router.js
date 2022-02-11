@@ -1,27 +1,32 @@
 // Write your "projects" router here!
 const express = require('express');
 const Projects = require('./projects-model');
-const { validateId } = require('./projects-middleware');
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    let projects = [];
     Projects.get()
         .then(resp => {
-            projects = resp;
+            if(resp == null) {
+                res.status(200).json([]);
+            } else {
+                res.status(200).json(resp);
+            }
         })
         .catch(() => {
             res.status(500).json({message: 'failed to get projects'});
         })
-    res.status(200).json(projects);
 });
 
-router.get('/:id', validateId, (req, res) => {
+router.get('/:id', (req, res) => {
     const { id } = req.params;
     Projects.get(id)
-        .then(project => {
-            res.status(200).json(project);
+        .then(resp => {
+            if(resp == null) {
+                res.status(404).json({message: `project ${id} not found`});
+            } else {
+                res.status(200).json(resp);
+            }
         })
         .catch(() => {
             res.status(500).json({message: 'failed to get project'});
