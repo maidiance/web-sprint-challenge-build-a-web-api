@@ -1,6 +1,6 @@
 // Write your "projects" router here!
 const express = require('express');
-const Projects = require('./projects-model');
+const Projects = require('./projects-model.js');
 
 const router = express.Router();
 
@@ -13,7 +13,8 @@ router.get('/', (req, res) => {
                 res.status(200).json(resp);
             }
         })
-        .catch(() => {
+        .catch((err) => {
+            console.log(err);
             res.status(500).json({message: 'failed to get projects'});
         })
 });
