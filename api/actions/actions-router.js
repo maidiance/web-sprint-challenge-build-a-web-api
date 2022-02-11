@@ -1,6 +1,8 @@
 // Write your "actions" router here!
 const express = require('express');
 const Actions = require('./actions-model.js');
+const { validateActionId, validateAction } = require('./actions-middlware');
+const { validateProjectId } = require('../projects/projects-middleware');
 
 const router = express.Router();
 
@@ -15,6 +17,20 @@ router.get('/', (req, res) => {
         })
         .catch(() => {
             res.status(500).json({message: 'failed to get actions'});
+        })
+});
+
+router.get('/:id', validateActionId, (req, res) => {
+    res.status(200).json(req.action);
+});
+
+router.post('/', validateProjectId, validateAction, (req, res) => {
+    Actions.insert(req.action)
+        .then(() => {
+            res.status(201).json(req.action);
+        })
+        .catch(() => {
+            res.status(500).json({message: 'failed to post action'});
         })
 });
 
