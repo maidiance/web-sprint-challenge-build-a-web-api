@@ -35,7 +35,7 @@ router.get('/:id', (req, res) => {
 
 router.post('/', validateProject, (req, res) => {
     Projects.insert(req.project)
-        .then(resp => {
+        .then(() => {
             res.status(201).json(req.project);
         })
         .catch(() => {

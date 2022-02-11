@@ -17,8 +17,9 @@ function validateProject(req, res, next) {
     } else if(!project.completed) {
         req.project = {
             completed: false,
-            ...req.body
+            ...project
         }
+        next();
     } else {
         req.project = project;
         next();
