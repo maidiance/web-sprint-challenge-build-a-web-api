@@ -151,6 +151,17 @@ Be prepared to demonstrate your understanding of this week's concepts by answeri
   Node.js allows developers to use javascript (allowing for the front end and back end to share the same programming language). Express, a module of Node.js, allows us to build the back end working with JSONs, using middleware for our APIs.
 
 1. Understand and explain the use of Middleware.
+
+  Middleware allows us to, for example, parse json out of request bodies, route certain requests, handle errors, or many other tasks. The main idea is for a developer to control functionality and behavior of the api they are designing.
+
 1. The basic principles of the REST architectural style.
+
+  The communication client to server or vice versa is stateless - each request is separate and independent with the requests themselves being managed through HTTP. To improve network performance, our APIs are cacheable meaning we should be able to run the same command multiple times and receive the same results. Out system should be layered, such that not all components necessarily communicate with each other. The API returns the necessary resources and code for clients to execute their code against it. Finally, our interface should be uniform making our resources accessible through a single URL.
+
 1. Understand and explain the use of Express Routers.
+
+  These allow us to direct certain requests to certain routes. Getting the list of to-dos and a list of friends should be on two different endpoints, and routes allow for easy separation of concerns making debugging an easier task and making our API more user friendly.
+
 1. Describe tooling used to manually test the correctness of an API.
+
+  I personally prefer Postman to manually test, but there are several such methods all of which allow the developer to make requests against their endpoints and see what is returned by the API, thus allowing manual testing.
