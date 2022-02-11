@@ -10,6 +10,17 @@ function logger(req, res, next) {
     next();
 }
 
+function validateProject(req, res, next) {
+    const project = req.body;
+    if(!project.name || !project.description){
+        res.status(400).json({message: 'missing required field(s)'});
+    } else {
+        req.project = project;
+        next();
+    }
+}
+
 module.exports = {
-    logger
+    logger,
+    validateProject
 };
